@@ -84,7 +84,7 @@ spec:
             - name: prometheus-data
               mountPath: /tmp/cours/m2/mise-en-situation-devops/prometheus
           args:
-            - "--config.file=/tmp/cours/m2/mise-en-situation-devops/prometheus/prometheus.yml"
+            - "--config.file=/etc/prometheus/prometheus.yml"
       volumes:
         - name: prometheus-data
           persistentVolumeClaim:
