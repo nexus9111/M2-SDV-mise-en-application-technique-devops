@@ -5,7 +5,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: grafana-data
 spec:
-  #storageClassName: local
   accessModes:
     - ReadWriteOnce
   resources:
@@ -33,27 +32,11 @@ data:
           - targets: ['node-exporter:9100']
 ---
 
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: prometheus-data
-# spec:
-#   #storageClassName: local
-#   capacity:
-#     storage: 1Gi
-#   accessModes:
-#     - ReadWriteOnce
-#   hostPath:
-#     path: /etc/prometheus
-
-# ---
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: prometheus-data
 spec:
-  # storageClassName: local
   accessModes:
     - ReadWriteOnce
   resources:
@@ -83,13 +66,20 @@ spec:
             - containerPort: 9090
           volumeMounts:
             - name: prometheus-data
-              mountPath: /etc/prometheus
+              mountPath: /prometheus
+            - name: config-volume
+              mountPath: /etc/prometheus/prometheus.yml
+              subPath: prometheus.yml
           args:
             - "--config.file=/etc/prometheus/prometheus.yml"
       volumes:
         - name: prometheus-data
           persistentVolumeClaim:
             claimName: prometheus-data
+        - name: config-volume
+          configMap:
+            name: prometheus-config
+
 
 ---
 
