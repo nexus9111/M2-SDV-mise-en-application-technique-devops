@@ -43,7 +43,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /etc/prometheus
+    path: /tmp/cours/m2/mise-en-situation-devops/prometheus
 
 ---
 
@@ -68,9 +68,9 @@ spec:
             - containerPort: 9090
           volumeMounts:
             - name: prometheus-data
-              mountPath: /etc/prometheus
+              mountPath: /tmp/cours/m2/mise-en-situation-devops/prometheus
           args:
-            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--config.file=/tmp/cours/m2/mise-en-situation-devops/prometheus/prometheus.yml"
       volumes:
         - name: prometheus-data
           persistentVolumeClaim:
