@@ -68,7 +68,6 @@ spec:
           configMap:
             name: prometheus-config
 
-
 ---
 
 apiVersion: v1

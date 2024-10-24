@@ -28,6 +28,7 @@ spec:
           hostPath:
             path: /
             type: Directory
+
 ---
 
 apiVersion: v1
