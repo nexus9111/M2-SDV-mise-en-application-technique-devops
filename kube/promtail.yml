@@ -53,6 +53,12 @@ data:
           - docker: {}
         kubernetes_sd_configs:
           - role: pod
+        static_configs:
+          - targets:
+              - localhost
+            labels:
+              job: kubernetes-pods
+              __path__: /var/lib/docker/containers/*/*.log
         relabel_configs:
           - action: replace
             source_labels: [__meta_kubernetes_pod_label_app]
@@ -100,7 +106,7 @@ spec:
               mountPath: /var/log/pods
               readOnly: true
             - name: varlogcontainers
-              mountPath: /var/log/containers
+              mountPath: /var/lib/docker/containers
               readOnly: true
       volumes:
         - name: config
@@ -113,4 +119,4 @@ spec:
             path: /var/log/pods
         - name: varlogcontainers
           hostPath:
-            path: /var/log/containers
+            path: /var/lib/docker/containers
