@@ -18,13 +18,17 @@ spec:
           image: grafana/promtail:2.7.1
           args:
             - "-config.file=/etc/promtail/promtail-config.yaml"
+            - "-log.level=debug"
           volumeMounts:
             - name: config
               mountPath: /etc/promtail
-            - name: varlog
-              mountPath: /var/log
-            - name: varlibdockercontainers
-              mountPath: /var/lib/docker/containers
+            - name: run
+              mountPath: /run/promtail
+            - name: varlogpods
+              mountPath: /var/log/pods
+              readOnly: true
+            - name: varlogcontainers
+              mountPath: /var/log/containers
               readOnly: true
       volumes:
         - name: config
@@ -48,7 +52,7 @@ data:
       http_listen_port: 9080
       grpc_listen_port: 0
     positions:
-      filename: /var/log/positions.yaml
+      filename: /run/promtail/positions.yaml
     clients:
       - url: http://loki:3100/loki/api/v1/push
     scrape_configs:
@@ -75,13 +79,11 @@ rules:
   - apiGroups: [""]
     resources:
       - pods
-      - nodes
       - namespaces
     verbs:
       - get
       - list
       - watch
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
