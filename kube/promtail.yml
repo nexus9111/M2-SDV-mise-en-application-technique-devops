@@ -75,7 +75,7 @@ spec:
       serviceAccountName: promtail
       containers:
         - name: promtail
-          image: grafana/promtail:2.7.1
+          image: grafana/promtail:2.7.0
           args:
             - "-config.file=/etc/promtail/promtail-config.yaml"
             - "-log.level=debug"
