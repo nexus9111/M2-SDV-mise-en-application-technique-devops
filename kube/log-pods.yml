@@ -9,4 +9,14 @@ spec:
   containers:
     - name: log-generator
       image: busybox
-      command: ["/bin/sh", "-c", "while true; do echo 'Hello from log-generator'; sleep 5; done"]
+      command:
+        - /bin/sh
+        - -c
+        - |
+          while true; do
+            LEVEL=$(shuf -e "INFO" "WARNING" "ERROR" -n 1);
+            TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ");
+            MESSAGE=$(shuf -e "Operation successful" "Minor issue detected" "Critical error occurred" -n 1);
+            echo "{\"timestamp\": \"$TIMESTAMP\", \"level\": \"$LEVEL\", \"message\": \"$MESSAGE\"}";
+            sleep 5;
+          done
